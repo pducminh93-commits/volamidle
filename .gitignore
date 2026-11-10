@@ -1,0 +1,32 @@
+# Phụ thuộc build (cài lại bằng: npm install)
+node_modules/
+
+# Bản build sinh ra từ js/ + src_archive/ (chạy: node build_obfuscate.js)
+# Bundle cũ bị xoá mỗi lần build nên không đưa vào git.
+assets/*.bundle.js
+assets/style.*.bundle.css
+
+# Cache khung ảnh vòng sáng do build/runtime tạo ra (không commit)
+# assets/vong_sang/ID_*/frames_rgba/
+
+# Công cụ dev sinh ra
+BAO_CAO_BAN_DO.html
+
+# Hệ điều hành / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.log
+*.tmp
+
+# Công cụ dev / dữ liệu tải về (chạy tools/sync_skills_web.cjs để tạo lại)
+.tmp_web/
+
+# Sao lưu data.js do tools/sync_*.cjs tạo ra
+src_archive/data.js.bak_*
+
+# Công cụ tạm của agent
+.abacusai-bot/
+_cleanup/

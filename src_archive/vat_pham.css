@@ -1,0 +1,73 @@
+/* Mau ten va dong ma phap theo KItem::GetDesc, Core/Src/KItem.cpp (SBQA/JX1). */
+:root{--q-thuong:#fff;--q-xanh:rgb(100,100,255);--q-vang:#ff0;--q-bachkim:#e8f6ff;--q-tim:rgb(170,30,255);--q-an:rgb(120,120,120)}
+.vp-name.r0,.it.r0{--vp-quality:var(--q-thuong)}
+.vp-name.r1,.it.r1{--vp-quality:var(--q-xanh)}
+.it.r1{--vp-quality:#6aa8ff}
+.vp-name.r2,.it.r2{--vp-quality:var(--q-vang)}
+.vp-name.r3,.it.r3{--vp-quality:var(--q-tim)}
+.vp-name.r4,.it.r4{--vp-quality:var(--q-vang)}
+.vp-name.r5,.it.r5{--vp-quality:var(--q-bachkim)}
+@font-face{font-family:"SBQA Item Pixel";src:url("fonts/sbqa-item-pixel.ttf?v=20261009r3") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+.vp-card{display:table;width:max-content;max-width:min(300px,calc(100vw - 12px));box-sizing:border-box;background:rgba(0,0,0,.88);border:1px solid #665e50;border-radius:0;padding:6px 8px;color:#fff;font:12px/16px "SBQA Item Pixel",Tahoma,Arial,sans-serif;font-synthesis:none;letter-spacing:0;text-align:center;text-shadow:1px 1px 0 #000;box-shadow:none}
+.vp-card .vp-name{color:var(--vp-quality,#fff)!important;font:400 12px/16px "SBQA Item Pixel",Tahoma,Arial,sans-serif;font-synthesis:none;margin:0;background:none}
+.vp-name{font-family:"SBQA Item Pixel",Tahoma,Arial,sans-serif;font-synthesis:none}
+.vp-card.r5 .vp-name{background:none}
+.vp-card .vp-name.broken{color:rgb(255,0,66)!important;background:none}
+.vp-card .vp-lines>div{padding:0;margin:0;line-height:16px;white-space:normal}
+.vp-card .vp-gap{height:16px}
+.vp-card .vp-req.bad{color:#f00}
+.vp-card .vp-magic.on{color:rgb(99,101,255)}
+.vp-card .vp-magic.on.vp-hidden{color:rgb(100,100,255)}
+.vp-card.r3 .vp-magic.on.vp-hidden{color:rgb(170,30,255)}
+.vp-card.r4 .vp-magic.on.vp-hidden,.vp-card.r5 .vp-magic.on.vp-hidden{color:#ff0}
+.vp-card.r3 .vp-magic.on{color:rgb(170,30,255)}
+.vp-card.r4 .vp-magic.on,.vp-card.r5 .vp-magic.on{color:#ff0}
+.vp-card .vp-magic.off{color:rgb(120,120,120)}
+.vp-card.r3 .vp-magic.off{color:rgb(170,135,184)}
+.vp-card.r4 .vp-magic.off,.vp-card.r5 .vp-magic.off{color:rgb(123,125,90)}
+.vp-card .vp-indestructible{color:#ff0}
+.vp-card .vp-bound,.vp-card .vp-member.bag{color:#0f0}
+.vp-card .vp-member.worn{color:rgb(247,195,90)}
+.vp-card .vp-member.missing{color:rgb(0,75,0)}
+.vp-card .vp-hint{color:#ff0}
+.vp-card .vp-expiry{color:rgb(255,90,0)}
+.vp-card .vp-price{color:#fff}
+.vp-card .vp-price span{color:#ff0}
+.vp-card .mx2{color:rgb(255,85,0)}
+#tip.vp-item-tip{width:max-content;max-width:calc(100vw - 12px);max-height:calc(100vh - 12px);overflow:auto;box-sizing:border-box;background:transparent;border:0;border-radius:0;padding:0;box-shadow:none;display:flex;align-items:flex-start;gap:4px}
+#tip.vp-item-tip[hidden]{display:none}
+#tip.vp-item-tip.vp-stack{flex-direction:column;align-items:center}
+#tip.vp-item-tip.vp-stack .tipcmp{width:100%}
+#tip.vp-item-tip .vp-card{flex:none}
+#tip.vp-item-tip .tipcmp{border:0;display:flex;flex-direction:column;align-items:center;margin:0;padding:0;opacity:1}
+#tip.vp-item-tip:has(.tip-item-pane){padding:10px;gap:12px;border:1px solid #8a7345;background:rgba(11,19,15,.96);box-shadow:0 8px 24px #0008}
+#tip.vp-item-tip .tip-item-pane{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+#tip.vp-item-tip .tip-item-pane .vp-card{max-width:min(300px,calc(100vw - 40px));margin:0}
+#tip.vp-item-tip .tip-item-pane .tiplbl{margin:0;padding:0 8px;color:#eadba4;background:none;line-height:18px}
+#tip.vp-item-tip .tiplbl{background:rgba(0,0,0,.82);color:#fff;font:12px/16px Tahoma,Arial,sans-serif;text-align:center;padding:0 4px}
+.it:not(.empty){border-color:var(--vp-quality,var(--q-thuong))!important;box-shadow:inset 0 0 8px color-mix(in srgb,var(--vp-quality,var(--q-thuong)) 43%,transparent),0 0 5px color-mix(in srgb,var(--vp-quality,var(--q-thuong)) 35%,transparent)!important}
+.eqdoll .slot .it:not(.empty){border:1px solid var(--vp-quality,var(--q-thuong))!important}
+.it.r3{--rc:#aa1eff}
+.it.r5{--rc:#b9edff}
+.it.r3::before,.it.r5::before{padding:3px;opacity:1;background:conic-gradient(from var(--rot),transparent 0 38%,var(--rc) 62%,#fff 72%,var(--rc) 83%,transparent 100%);animation-duration:2.8s}
+.it u.ktag.kTIM{background:#aa1eff;color:#fff;text-shadow:1px 1px #000}
+
+
+/* Item details: fit one card, or two comparison cards; keep native tooltip styles. */
+#modal .mbox:has(.item-detail-modal){width:min(364px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;padding:12px 16px 16px!important}
+#modal .mbox:has(.item-detail-modal) #mClose{float:right;margin:0 0 8px;right:0;top:0}
+#modal .mbox:has(.item-detail-modal) #mBody{clear:both}
+#modal .mbox:has(.item-detail-modal.has-comparison){width:min(676px,calc(100vw - 24px))}
+.item-detail-cards{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start;justify-items:center}
+.has-comparison .item-detail-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+.item-detail-pane{min-width:0;width:100%;display:flex;flex-direction:column;align-items:center;gap:6px}
+.item-detail-pane .vp-card{max-width:min(300px,100%);margin:0 auto}
+.item-detail-label{color:#eadba4;font:13px Tahoma,Arial,sans-serif;text-align:center}
+.item-detail-stats{margin:12px 0;border:1px solid #625638;padding:8px;background:#111b16}
+.item-detail-stats summary{cursor:pointer;color:#d9c898;min-height:28px;line-height:28px}
+.item-detail-stats .cmp2{margin:8px 0 0}.item-detail-stats .cmpv{display:flex;flex-wrap:wrap;gap:6px 12px}
+.item-detail-actions{position:sticky;bottom:-1px;z-index:1;margin:10px 0 0;padding:8px 0 0;background:#101915;display:grid;grid-template-columns:repeat(2, 1fr);gap:6px;border-top:1px solid #76633c}
+.item-detail-actions .btn{width:100%;min-height:36px;height:36px;padding:2px 8px;font-size:13px;line-height:1.2;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box}
+.item-detail-actions .btn.full-width{grid-column:1 / -1}
+@media(max-width:600px){#modal .mbox:has(.item-detail-modal.has-comparison){width:min(364px,calc(100vw - 24px))}.has-comparison .item-detail-cards{grid-template-columns:minmax(0,1fr)}.item-detail-stats summary{min-height:44px;line-height:1.5;display:flex;align-items:center}}
+

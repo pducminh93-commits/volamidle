@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Võ Lâm Idle - Game Kiếm Hiệp Tự Do Treo Máy JX</title>
+  <meta name="description" content="Võ Lâm Idle - Game nhập vai kiếm hiệp tự do cày cuốc, ngũ hành tương sinh tương khắc, chiến trường Tống Kim rực lửa, lưu đám mây đa nền tảng.">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --gold-primary: #f0c05a;
+      --gold-light: #fff0a8;
+      --gold-dark: #b8860b;
+      --gold-gradient: linear-gradient(135deg, #fff2ad 0%, #d4a036 50%, #8c5b05 100%);
+      --bg-dark: #07090b;
+      --card-bg: rgba(16, 21, 26, 0.78);
+      --card-border: rgba(212, 160, 54, 0.35);
+      --card-hover-border: rgba(255, 215, 105, 0.85);
+      --text-main: #e8e2d5;
+      --text-muted: #a69f91;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background Kiếm Hiệp với hiệu ứng mờ ảo và sương khói */
+    .bg-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: url('img/u2/login/bg20a.jpg') center center / cover no-repeat;
+      filter: brightness(0.65) contrast(1.1);
+      transform: scale(1.03);
+      transition: transform 10s ease-out;
+    }
+
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at center, rgba(7, 9, 11, 0.45) 0%, rgba(7, 9, 11, 0.92) 85%);
+      pointer-events: none;
+    }
+
+    /* Cánh hoa bay lượn nhẹ nhàng */
+    .petals-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      background: radial-gradient(ellipse at center, rgba(255, 183, 197, 0.85) 0%, rgba(255, 105, 135, 0.4) 70%, transparent 100%);
+      border-radius: 12px 2px 12px 2px;
+      opacity: 0.6;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translate3d(0, -50px, 0) rotate(0deg);
+        opacity: 0;
+      }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.6; }
+      100% {
+        transform: translate3d(120px, 105vh, 0) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Main Container */
+    .main-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    /* Header Nav */
+    .top-nav {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(18, 25, 22, 0.85);
+      border: 1px solid rgba(82, 196, 26, 0.4);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: #95de64;
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(82, 196, 26, 0.2);
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #52c41a;
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 0 0 rgba(82, 196, 26, 0.7); }
+      70% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 8px rgba(82, 196, 26, 0); }
+      100% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 0 0 rgba(82, 196, 26, 0); }
+    }
+
+    .btn-gm-link {
+      color: var(--gold-primary);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 700;
+      background: rgba(22, 18, 10, 0.8);
+      border: 1px solid rgba(212, 160, 54, 0.4);
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.25s;
+    }
+
+    .btn-gm-link:hover {
+      background: rgba(212, 160, 54, 0.2);
+      border-color: var(--gold-light);
+      box-shadow: 0 0 12px rgba(212, 160, 54, 0.35);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      margin: auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0 35px;
+    }
+
+    .game-logo-wrapper {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(38px, 7vw, 76px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 18px rgba(212, 160, 54, 0.55)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.9));
+      line-height: 1.15;
+    }
+
+    .hero-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: #fff4d1;
+      letter-spacing: 2px;
+      margin-top: 8px;
+      margin-bottom: 24px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 12px rgba(212, 160, 54, 0.3);
+    }
+
+    .hero-desc {
+      max-width: 680px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 34px;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Nút VÀO GAME Khổng Lồ Ánh Kim */
+    .play-btn-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .btn-play-game {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-decoration: none;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(19px, 3.2vw, 26px);
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: #261600;
+      background: linear-gradient(180deg, #fff7cc 0%, #f7c94b 45%, #d18d17 80%, #9e6402 100%);
+      padding: 16px 48px;
+      border-radius: 40px;
+      border: 2px solid #fff3a1;
+      box-shadow: 0 0 28px rgba(247, 201, 75, 0.65), 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-play-game::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0) 100%);
+      transform: rotate(30deg);
+      animation: shine 3.5s infinite;
+    }
+
+    @keyframes shine {
+      0% { left: -60%; }
+      25% { left: 140%; }
+      100% { left: 140%; }
+    }
+
+    .btn-play-game:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 0 45px rgba(247, 201, 75, 0.95), 0 12px 30px rgba(0, 0, 0, 0.8), inset 0 2px 6px rgba(255, 255, 255, 0.9);
+      color: #120900;
+    }
+
+    .btn-play-game:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow: 0 0 20px rgba(247, 201, 75, 0.6);
+    }
+
+    .play-hint {
+      font-size: 13px;
+      color: #9fe2bf;
+      margin-top: 8px;
+      font-weight: 600;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    /* 4 Ô Thông Tin Nổi Bật (Nằm ngang) */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      width: 100%;
+      margin-top: 30px;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 22px 18px;
+      text-align: center;
+      transition: all 0.35s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--gold-gradient);
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--card-hover-border);
+      background: rgba(22, 29, 36, 0.92);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7), 0 0 18px rgba(212, 160, 54, 0.28);
+    }
+
+    .feature-card:hover::after {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      font-size: 34px;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 160, 54, 0.2) 0%, rgba(212, 160, 54, 0.02) 70%);
+      border: 1px solid rgba(212, 160, 54, 0.25);
+    }
+
+    .feature-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff0b8;
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .feature-desc {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    .landing-footer {
+      margin-top: 35px;
+      font-size: 12.5px;
+      color: #7d7568;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .main-container {
+        padding: 25px 15px 20px;
+      }
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .btn-play-game {
+        width: 100%;
+        padding: 15px 20px;
+      }
+      .hero-section {
+        padding: 15px 0 20px;
+      }
+      .feature-card {
+        padding: 16px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Nền hình ảnh kiếm hiệp -->
+  <div class="bg-wrapper"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- Hiệu ứng cánh hoa bay lượn -->
+  <div class="petals-container" id="petals"></div>
+
+  <div class="main-container">
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="badge-status">
+        <span class="pulse-dot"></span>
+        <span>Máy Chủ Máy Chủ 1 · Hoạt Động 24/7</span>
+      </div>
+      <div>
+        <a href="https://discord.gg/DHxWUah3c" target="_blank" rel="noopener noreferrer" class="btn-gm-link" style="background: rgba(88, 101, 242, 0.2); border-color: rgba(88, 101, 242, 0.55); color: #9bb1ff;">💬 Group Thảo Luận</a>
+      </div>
+    </header>
+
+    <!-- Hero Center Section -->
+    <main class="hero-section">
+      <div class="game-logo-wrapper">
+        <h1 class="hero-title">VÕ LÂM IDLE</h1>
+        <p class="hero-subtitle">⚔️ Tái Khởi Giang Hồ · Đỉnh Cao Kiếm Hiệp JX ⚔️</p>
+      </div>
+
+      <p class="hero-desc">
+        Hành trình bôn tẩu giang hồ đích thực với đồ họa nguyên bản hoài niệm. Tự do luyện công, tương sinh tương khắc ngũ hành, khiêu chiến Tống Kim rực lửa và chinh phục đệ nhất thiên hạ!
+      </p>
+
+      <!-- Nút Vào Game Lớn -->
+      <div class="play-btn-wrapper">
+        <a href="play.html" class="btn-play-game">
+          <span>⚔️ VÀO GAME NGAY ⚔️</span>
+        </a>
+        <div class="play-hint">✨ Không cần cài đặt · Chơi mượt mà trên Trình duyệt PC & Mobile</div>
+      </div>
+    </main>
+
+    <!-- 4 Ô Thông Tin Nằm Ngang -->
+    <section class="features-grid">
+      <!-- Ô 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">🏛️</div>
+        <h3 class="feature-title">Thập Đại Môn Phái</h3>
+        <p class="feature-desc">Thiếu Lâm, Cái Bang, Nga My, Đường Môn, Võ Đang... Chuẩn hệ thống ngũ hành tương sinh tương khắc, kĩ năng 9x chân thực.</p>
+      </div>
+
+      <!-- Ô 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">🗡️</div>
+        <h3 class="feature-title">Treo Máy Rảnh Tay</h3>
+        <p class="feature-desc">Hệ thống Auto thông minh tự động cày cấp, săn trang bị Hoàng Kim cực phẩm, tiến trình liên tục ngay cả khi bạn bận rộn.</p>
+      </div>
+
+      <!-- Ô 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">🚩</div>
+        <h3 class="feature-title">Chiến Trường Tống Kim</h3>
+        <p class="feature-desc">Hỗn chiến rực lửa với Bot AI cao thủ PK chân thực, có đội săn lùng và hộ tống bảo kê, đoạt điểm đổi Tống Kim Lệnh quý giá.</p>
+      </div>
+
+      <!-- Ô 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">☁️</div>
+        <h3 class="feature-title">Đồng Bộ Đa Nền Tảng</h3>
+        <p class="feature-desc">Dữ liệu lưu trữ đám mây Cloud Save an toàn tuyệt đối. Dễ dàng tiếp tục hành trình trên mọi thiết bị PC, Laptop và Điện thoại.</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <div>Võ Lâm IDLE - Phiên Bản Trải Nghiệm Miễn Phí Không Giới Hạn</div>
+      <div>Phát triển dựa trên niềm đam mê kiếm hiệp tình duyên bất diệt.</div>
+    </footer>
+  </div>
+
+  <script>
+    // Sinh hiệu ứng cánh hoa đào rơi tự nhiên
+    (function createPetals() {
+      const container = document.getElementById('petals');
+      if (!container) return;
+      const count = window.innerWidth < 600 ? 12 : 25;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'petal';
+        p.style.left = Math.random() * 100 + 'vw';
+        const size = Math.random() * 8 + 8;
+        p.style.width = size + 'px';
+        p.style.height = (size * 1.3) + 'px';
+        p.style.animationDuration = (Math.random() * 6 + 6) + 's';
+        p.style.animationDelay = (Math.random() * 8) + 's';
+        container.appendChild(p);
+      }
+    })();
+  </script>
+</body>
+</html>

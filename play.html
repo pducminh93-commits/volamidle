@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#0e1412">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Võ Lâm Idle">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="img/pwa/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<title>Võ Lâm Idle</title>
+  <link rel="stylesheet" href="assets/style.fc042e6c.bundle.css">
+  <link rel="stylesheet" href="ui/vltk_pc_theme.css">
+  <link rel="stylesheet" href="ui/holo.css">
+</head>
+<body>
+<div id="app">
+  <header id="top">
+    <div class="lvbox"><span id="lv">1</span></div>
+    <div class="topmid">
+      <div class="row"><b id="heroName">Võ Lâm Idle</b><span id="stageLbl"></span></div>
+    </div>
+    <button id="ktcBtn" title="Kỳ Trân Các">Kỳ Trân Các</button>
+    <div class="gold"><span class="coin"></span><span id="gold">0</span><img class="knbi" src="img/ep/knb.png" alt=""><span id="knbTop">0</span></div>
+    <button id="actBtn" title="Nhiệm vụ · Hoạt động">⚔</button>
+    <button id="giftBtn" title="Phần thưởng">🎁</button>
+    <button id="verBtn" title="Cập nhật phiên bản">🔄</button>
+    <button id="compactBtn" title="Thu gọn / mở rộng sân đấu">⛶</button>
+  </header>
+
+  <section id="battle">
+    <div id="bg"></div>
+    <canvas id="arena"></canvas>
+    <div id="vli120Bar" hidden aria-label="Kỹ năng chủ động cấp 120"></div>
+    <div id="hud">
+      <div class="jxs"><span>Cấp</span><b id="lvS">1</b></div>
+      <div class="bar hp"><i id="hpBar"></i><span id="hpTxt"></span></div>
+      <div class="bar mp"><i id="mpBar"></i><span id="mpTxt"></span></div>
+      <div class="bar xp"><i id="xpBar"></i><span id="xpTxt"></span></div>
+      <div class="jxs" title="Lực tay phải (sát thương chiêu chính)"><span>Lực tay</span><b id="pwS">0</b></div>
+      <div id="mainSk"></div>
+    </div>
+    <div id="topCtl"><button id="pkBtn" class="chip" title="Chế độ PK: Hòa bình / Đồ sát">PK: Hòa bình</button><button id="rideBtn" class="chip"></button><button id="rotBtn" class="chip"></button><button id="ctrlBtn" class="chip"></button><button id="summonBtn" class="chip">Đệ tử: <i class="ck"></i></button></div>
+    <button id="inBtn" class="chip"></button>
+    <div id="townBar" class="hidden"><b id="townName"></b><button class="btn sm" id="bShop">Cửa hàng</button><button class="btn sm" id="bKtcT">Kỳ Trân Các</button><button class="btn sm" id="bStashT">Kho chung</button><button class="btn sm" id="bSellTown">Bán đồ không khớp lọc</button><button class="btn sm on" id="bBack">Trở lại bãi</button></div>
+    <div id="vliJoyPad" style="display:none;"><div id="vliJoyRing"><div id="vliJoyThumb"></div></div></div>
+    <div id="pad">
+      <div class="hb">
+        <button class="pbtn pot holo" id="bHp" title="Hồ Lô Thần Nông — uống hồi cả sinh lực và nội lực (phím 1) · chuột phải để nâng cấp"><i></i><div class="cd"></div><em></em><b>1</b></button>
+        <button class="pbtn pot holo" id="bMp" title="Hồ Lô Thần Nông — ngụm còn lại (phím 2) · bấm để mở bảng Hồ Lô"><i></i><div class="cd"></div><b>2</b></button>
+        <button class="pbtn pot tp" id="bTp" title="Thổ Địa Phù (phím 3)"><i></i><div class="cd"></div><b>3</b></button>
+      </div>
+      <div class="hb"><button class="pbtn mn" id="bMain"><i></i></button></div>
+      <div class="hb">
+        <button class="pbtn sk" data-i="0" title=""><i></i><b>F1</b><s class="pk">▾</s></button>
+        <button class="pbtn sk" data-i="1" title=""><i></i><b>F2</b><s class="pk">▾</s></button>
+        <button class="pbtn sk" data-i="2" title=""><i></i><b>F3</b><s class="pk">▾</s></button>
+        <button class="pbtn sk" data-i="3" title=""><i></i><b>F4</b><s class="pk">▾</s></button>
+      </div>
+    </div>
+  </section>
+
+  <main id="panel">
+    <div class="tab" id="t-log"></div>
+    <div class="tab hidden" id="t-char"></div>
+    <div class="tab hidden" id="t-skill"></div>
+    <div class="tab hidden" id="t-inv"></div>
+    <div class="tab hidden" id="t-forge"></div>
+    <div class="tab hidden" id="t-quest"></div>
+    <div class="tab hidden" id="t-more"></div>
+  </main>
+
+  <nav id="tabs">
+    <button data-t="log" class="on">Giang hồ</button>
+    <button data-t="char">Nhân vật<em class="dot" id="dotChar"></em></button>
+    <button data-t="inv">Hành trang</button>
+    <button data-t="skill">Võ công<em class="dot" id="dotSkill"></em></button>
+    <button data-t="forge">Lò rèn<em class="dot" id="dotForge"></em></button>
+    <button data-t="quest">Nhiệm vụ<em class="dot" id="dotQuest"></em></button>
+    <button id="tabRide" class="tride tteam">Tổ đội</button>
+    <button data-t="more">Hệ thống</button>
+  </nav>
+
+  <div id="modal" class="hidden" role="dialog" aria-modal="true"><div class="mbox" tabindex="-1"><button class="mx" id="mClose">✕</button><div id="mBody"></div></div></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+</div>
+<script src="assets/1.data.8ad6960f.bundle.js"></script>
+<script src="assets/2.skills_data.b43126d4.bundle.js"></script>
+<script src="assets/3.engine.ba7d63eb.bundle.js"></script>
+<script src="assets/4.features.46a1ff15.bundle.js"></script>
+</body>
+</html>

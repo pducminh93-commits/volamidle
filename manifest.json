@@ -1,0 +1,31 @@
+{
+  "name": "Võ Lâm Idle",
+  "short_name": "Võ Lâm Idle",
+  "description": "Võ Lâm Idle - Game nhập vai kiếm hiệp tự động chơi mượt mà trên di động",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e1412",
+  "theme_color": "#0e1412",
+  "icons": [
+    {
+      "src": "img/pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/pwa/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

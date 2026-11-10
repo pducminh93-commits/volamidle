@@ -1,0 +1,22 @@
+{
+  "name": "volam-idle",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Game nhập vai kiếm hiệp idle chạy trong trình duyệt",
+  "scripts": {
+    "start": "node local_server.js",
+    "build": "node build_obfuscate.js",
+    "check:inputs": "node tools/check_build_inputs.cjs",
+    "check:maps": "node checks/check_maps.js",
+    "report:size": "node tools/report_bundle_sizes.cjs",
+    "test:bestdress": "node tests/test_bestdress.cjs",
+    "test": "node tools/verify.cjs",
+    "verify": "node tools/verify.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "5.10.0"
+  }
+}
