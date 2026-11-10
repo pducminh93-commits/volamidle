@@ -172,7 +172,7 @@ function itemHTML(it, inShop = false) {
   if (it.keep) vpBody += vpRow('vp-hint', 'Đã giữ: không tự bán hoặc tự mặc; bỏ giữ trong Lò rèn.');
   const nativeOpts = (it.mag || []).concat(it.ext || []).filter(m => ['fasthitrecover_v','freezetimereduce_p','visionradius_p'].includes(attrName(m.a)));
   if (nativeOpts.length) {
-    const uses={fasthitrecover_v:'Rút ngắn tư thế trúng đòn',freezetimereduce_p:'Giảm thời gian làm chậm Băng trong Tống Kim và chiến斗斗 землIO',visionradius_p:'Tăng tầm tìm mục tiêu Auto'};
+    const uses={fasthitrecover_v:'Rút ngắn tư thế trúng đòn',freezetimereduce_p:'Giảm thời gian bị đóng băng và làm chậm',visionradius_p:'Tăng tầm tìm mục tiêu Auto'};
     vpBody += vpRow('vp-hint',[...new Set(nativeOpts.map(m=>uses[attrName(m.a)]))].join(' · ')+'. Dòng ẩn cần kích hoạt để có hiệu lực.');
   }
   if (it.set && typeof setMembers === 'function') {
