@@ -1,6 +1,7 @@
 "use strict";
 
-const ROSTER = { units: new Map(), saves: new Map(), dirty: new Set(), vitals: new Map(), sharingXp: false, suppressCurrent: false, scene: null, charSlot: null, confirmDelete: null };
+const ROSTER = { units: new Map(), saves: new Map(), dirty: new Set(), vitals: new Map(), sharingXp: false, suppressCurrent: false, scene: null, charSlot: null, confirmDelete: null, sk9Xp: new Map(), sk9T: 0 };
+const ROSTER_SK9_EVERY = 2;
 const ROSTER_PARTY_SIZE = 4, ROSTER_RESERVE_SIZE = 4, rosterStoreKey = key => `${key}_${typeof getAuthUid === "function" ? getAuthUid() || "local" : "local"}`;
 const ROSTER_FORMATION = [{ side: -34, back: 38 }, { side: 34, back: 38 }, { side: 0, back: 78 }];
 const ROSTER_FOLLOW_RADIUS = 350, ROSTER_RECALL_DISTANCE = 285, ROSTER_RECALL_SPEED = 1.65;
@@ -855,6 +856,49 @@ function rosterResolveAttack(unit, enemy, attack) {
   }
 }
 
+/* Võ công cấp 90 của nhân vật phụ: gom XP theo mẻ rồi cộng mỗi vài giây,
+   để mỗi kill không phải ghi lại toàn bộ save của từng nhân vật. */
+function rosterSk9Queue(mon) {
+  if (!mon || !S || !S.fac) return;
+  const xp = mon.cls === "boss" ? 20 : mon.cls === "elite" ? 3 : 1;
+  for (const slot of rosterActiveSlots()) {
+    if (slot === SLOT) continue;
+    const state = rosterReadSave(slot);
+    if (!state || !state.fac) continue;
+    if (!(mon.L >= (state.lvl | 0) - 10)) continue;
+    let has = false;
+    for (const id in state.sk) { const sk = SK[id]; if (sk && sk.tier === 90 && state.sk[id] && !SK9_BRANCH[id]) { has = true; break; } }
+    if (!has) continue;
+    let pending = ROSTER.sk9Xp.get(slot);
+    if (!pending) ROSTER.sk9Xp.set(slot, pending = { xp: 0, used: {} });
+    pending.xp += xp;
+    if (mon.hitSk) for (const id in mon.hitSk) pending.used[id] = 1;
+  }
+}
+
+function rosterSk9Flush(dt) {
+  if (!ROSTER.sk9Xp.size) { ROSTER.sk9T = 0; return; }
+  ROSTER.sk9T += dt;
+  if (ROSTER.sk9T < ROSTER_SK9_EVERY) return;
+  ROSTER.sk9T = 0;
+  for (const [slot, pending] of [...ROSTER.sk9Xp]) {
+    ROSTER.sk9Xp.delete(slot);
+    if (!(pending.xp > 0) || slot === SLOT) continue;
+    let mutated = null;
+    rosterWithSkillSlot(slot, () => {
+      mutated = S;
+      const before = {};
+      for (const id in S.sk) before[id] = (SKL()[id] || {}).lv || 0;
+      sk9Gain(pending.xp, true, pending.used);
+      for (const id in S.sk) {
+        const after = (SKL()[id] || {}).lv || 0;
+        if (after > (before[id] || 0)) log(`🔥 <b>${esc(S.name || "Nhân vật")}</b>: ${esc(SK[id].n)} cấp ${after}/${SK[id].max}`);
+      }
+    });
+    mutated && rosterWriteSave(slot, mutated);
+  }
+}
+
 function rosterTick(dt) {
   if (!S || !S.fac || R.deadT > 0) return;
   R.P && ROSTER.vitals.set(SLOT, { hp: R.life / Math.max(1, R.P.life), mp: R.mana / Math.max(1, R.P.mana) });
@@ -964,6 +1008,7 @@ function rosterTick(dt) {
       mp: clamp(unit.mana / Math.max(1, unit.maxMana), 0, 1)
     });
   });
+  rosterSk9Flush(dt);
   if (attacked) killCheck();
 }
 
@@ -1080,6 +1125,16 @@ gainXp = function(amount) {
     return gained;
   } finally { ROSTER.sharingXp = false; }
 };
+
+/* Võ công 90: nhân vật phụ cũng tích XP khi cả đội hạ quái. */
+if (typeof sk9OnKill === "function") {
+  const rosterSk9OnKillBase = sk9OnKill;
+  sk9OnKill = function(mon) {
+    const result = rosterSk9OnKillBase(mon);
+    rosterSk9Queue(mon);
+    return result;
+  };
+}
 
 /* ==== Bọc hàm — lắp SAU KHI file nạp xong (tránh TDZ khi init() chạy sớm) ==== */
 const rosterSaveBase = save;
