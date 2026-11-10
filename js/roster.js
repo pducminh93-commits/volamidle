@@ -885,10 +885,11 @@ function rosterTick(dt) {
     for (const id in unit.skillCd) unit.skillCd[id] = Math.max(0, unit.skillCd[id] - dt);
     unit.mana = Math.min(unit.maxMana, unit.mana + (unit.stats.manaRegen || 0) * dt);
 
-    const manualMode = manual();
-    const attack = manualMode ? null : rosterChooseAttack(unit);
+    const attack = rosterChooseAttack(unit);
     const alive = (R.enemies || []).filter(target => !target.dead && target.hp > 0);
-    const enemy = manualMode ? null : (!R.town && !R.pkTarget && (alive.find(target => target.cls === "boss" || target.goldBoss) || alive.sort((a, b) => jxdE(unit, a) - jxdE(unit, b))[0]));
+    const bossPool = alive.filter(target => target.cls === "boss" || target.goldBoss);
+    const huntBoss = typeof tgtPri === "function" && tgtPri() === "hk" && bossPool.length;
+    const enemy = (!R.town && !R.pkTarget && (huntBoss ? bossPool.sort((a, b) => jxdE(unit, a) - jxdE(unit, b))[0] : alive.sort((a, b) => jxdE(unit, a) - jxdE(unit, b))[0]));
     const leaderDistance = jxdE(unit, H), recalling = leaderDistance > ROSTER_RECALL_DISTANCE;
     let goal = rosterFollowPoint(unit.slot), inRange = false;
     if (recalling) unit._recoverTarget = null;
