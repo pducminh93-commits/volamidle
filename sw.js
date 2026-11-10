@@ -1,5 +1,5 @@
-const C = "jxidle-v1794340910792";
-const IMG = "jxidle-img-1794340910792";
+const C = "jxidle-v1794341280660";
+const IMG = "jxidle-img-1794341280660";
 const BUST = [
   "img/z/397.jpg",
   "img/i/potb1.png",
